@@ -1,10 +1,23 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 import Card from '../shared/Card/Card.jsx';
 import Loading from '../shared/Loading/Loading.jsx';
+import { requestArticles } from '../../reducers/hackerNewsReducer.js';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function HackerNews() {
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  // const [articles, setArticles] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  const articles = useSelector((state) => state.hackerNews.articles);
+  // const articles = useSelector((state) => {
+  //   console.log(state);
+  //   return state.articles;
+  // });
+  const loading = useSelector((state) => state.hackerNews.loading);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(requestArticles);
+  }, [])
 
   const articleCards = articles.map((article) => <Card key={article.id} article={article} />);
   return (
